@@ -8,7 +8,7 @@ const otpSchema = new mongoose.Schema({
   attempts: { type: Number, default: 0 ,},               // wrong-tries count
   used: { type: Boolean, default: false,index: true, },              // mark true after successful verify
   createdAt: { type: Date, default: Date.now ,ndex: true,},
-  expiresAt: { type: Date, required: true, index: true ,} // set when creating OTP (e.g. now + 5min)
+  expiresAt: { type: Date, required: true ,} // set when creating OTP (e.g. now + 5min)
 });
 
 // TTL index: MongoDB will auto-delete the doc after expiresAt passes

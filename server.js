@@ -20,8 +20,8 @@ dotenv.config();
   
 
 
-
-// express app
+ 
+// express app instence 
 const app = express(); 
  
 // middlewares
