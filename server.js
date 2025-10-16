@@ -24,14 +24,17 @@ dotenv.config();
 // express app instence...
 const app = express(); 
  
+
+//for render 
+app.set("trust proxy", 1);
+
 // middlewares
 app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true
 }));
 
-//for render 
-app.set("trust proxy", 1);
+
 
 
 app.use(express.json());
