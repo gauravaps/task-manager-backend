@@ -30,7 +30,7 @@ app.set("trust proxy", 1);
 
 // middlewares
 app.use(cors({
-  origin:"https://youremployeetask.netlify.app",
+  origin:process.env.CLIENT_URL,
   credentials: true
 }));
 

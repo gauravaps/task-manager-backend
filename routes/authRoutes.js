@@ -32,8 +32,8 @@ router.get(
     // Set token in cookie..
     res.cookie("token", token, {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", 
-  // secure:true,
+  // secure: process.env.NODE_ENV === "production", 
+  secure:true,
   // sameSite: "lax", 
   sameSite: "none",
   maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -61,7 +61,12 @@ router.get("/me", verifyToken, async (req, res) => {
  
 
 router.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/", // ensure it matches cookie path
+  });
   res.json({ success: true, message: "Logged out" });
 });
 
