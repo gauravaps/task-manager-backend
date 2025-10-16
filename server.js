@@ -32,7 +32,7 @@ app.use(cors({
 
 app.use(express.json());
 
-//set cookie-parser middleware
+//set cookie-parser middleware for cookies
 app.use(cookieParser());
 
 app.use(passport.initialize());
