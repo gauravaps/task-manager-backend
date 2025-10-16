@@ -67,6 +67,9 @@ router.get("/logout", (req, res) => {
     sameSite: "None",
     path: "/", // ensure it matches cookie path
   });
+
+  // frontend  redirect
+  res.redirect(process.env.CLIENT_URL || "https://youremployeetask.netlify.app");
   res.json({ success: true, message: "Logged out" });
 });
 
