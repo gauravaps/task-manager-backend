@@ -29,7 +29,7 @@ router.get(
       { expiresIn: "7d" }
     );
 
-    // Set token in cookie
+    // Set token in cookie..
     res.cookie("token", token, {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production", // ✅
