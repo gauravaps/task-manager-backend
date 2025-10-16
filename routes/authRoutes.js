@@ -48,7 +48,7 @@ router.post("/register",upload.single('picture'), registerUser);
 router.post("/login" , loginUser)
  
 
-router.get("/me", verifyToken, async (req, res) => {
+router.get("/me",  async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json({ success: true, user });
