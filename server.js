@@ -30,6 +30,10 @@ app.use(cors({
   credentials: true
 }));
 
+//for render 
+app.set("trust proxy", 1);
+
+
 app.use(express.json());
 
 //set cookie-parser middleware for cookies
