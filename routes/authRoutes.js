@@ -17,6 +17,35 @@ dotenv.config();
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 //for login with Google
+// router.get(
+//   "/google/callback",
+//   passport.authenticate("google", { session: false }),
+//   (req, res) => {
+//     const user = req.user;
+
+//     const token = jwt.sign(
+//       { id: user._id, email: user.email ,isAdmin:user.isAdmin, name:user.name },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "7d" }
+//     );
+
+//     // Set token in cookie..
+//     res.cookie("token", token, {
+//   httpOnly: true,
+//   // secure: process.env.NODE_ENV === "production", 
+//   secure:true,
+//   // sameSite: "lax", 
+//   sameSite: "none",
+//   maxAge: 7 * 24 * 60 * 60 * 1000,
+// });
+//     // Redirect frontend with success status
+//     res.redirect(`${process.env.CLIENT_URL}/auth/success`);
+//   }
+// );
+
+
+
+// ✅ Google login callback
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
@@ -24,24 +53,40 @@ router.get(
     const user = req.user;
 
     const token = jwt.sign(
-      { id: user._id, email: user.email ,isAdmin:user.isAdmin, name:user.name },
+      { id: user._id, email: user.email, isAdmin: user.isAdmin, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // Set token in cookie..
-    res.cookie("token", token, {
-  httpOnly: true,
-  // secure: process.env.NODE_ENV === "production", 
-  secure:true,
-  // sameSite: "lax", 
-  sameSite: "none",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
-    // Redirect frontend with success status
-    res.redirect(`${process.env.CLIENT_URL}/auth/success`);
+    // ❌ Don’t set cookie here — Chrome blocks cross-site cookies on redirects
+    // ✅ Instead, redirect to frontend with token in query string
+    const redirectUrl = `${process.env.CLIENT_URL}/auth/success?token=${token}`;
+    res.redirect(redirectUrl);
   }
 );
+
+// ✅ New route to save token in cookie (same-site request)
+router.post("/save-token", (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ message: "Token missing" });
+  }
+
+  // Now safely set cookie from same-site request
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  res.json({ success: true, message: "Token saved in cookie" });
+});
+
+
+
 
 
 //Registration with manual form..
@@ -72,6 +117,10 @@ router.get("/logout", (req, res) => {
   res.redirect(process.env.CLIENT_URL || "https://youremployeetask.netlify.app");
   res.json({ success: true, message: "Logged out" });
 });
+
+
+
+
 
 
 //  OTP send route
