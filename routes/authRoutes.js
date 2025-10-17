@@ -60,7 +60,7 @@ router.get(
 
     // ❌ Don’t set cookie here — Chrome blocks cross-site cookies on redirects
     // ✅ Instead, redirect to frontend with token in query string
-    const redirectUrl = `${process.env.CLIENT_URL}/auth/success?token=${token}`;
+    const redirectUrl = `${process.env.CLIENT_URL}/auth/google/success?token=${token}`;
     res.redirect(redirectUrl);
   }
 );
